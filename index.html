@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happ App — Выберите страну</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --bg: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.85);
+            --text: #e2e8f0;
+            --accent: #a5b4fc;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e2937 100%);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        /* Фоновые элементы */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(165, 180, 252, 0.12) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 1100px;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .logo i {
+            font-size: 42px;
+            color: var(--primary);
+        }
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #c4d0ff, #e0e7ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            color: #94a3b8;
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+
+        /* Новый блок с рекомендацией */
+        .info-banner {
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(165, 180, 252, 0.3);
+            border-radius: 16px;
+            padding: 20px 28px;
+            margin-bottom: 50px;
+            text-align: center;
+            max-width: 820px;
+            margin-left: auto;
+            margin-right: auto;
+            backdrop-filter: blur(10px);
+        }
+        .info-banner h3 {
+            color: var(--accent);
+            margin-bottom: 10px;
+            font-size: 1.35rem;
+        }
+        .info-banner p {
+            color: #cbd5e1;
+            line-height: 1.55;
+            font-size: 1.05rem;
+        }
+
+        .countries-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 18px;
+            margin-bottom: 80px;
+        }
+        .country-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(148, 163, 184, 0.15);
+            border-radius: 20px;
+            padding: 24px 20px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .country-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 60%;
+            height: 60%;
+            background: radial-gradient(circle, rgba(165,180,252,0.3) 0%, transparent 70%);
+            opacity: 0;
+            transition: all 0.5s;
+            transform: rotate(30deg);
+        }
+        .country-card:hover {
+            transform: translateY(-12px) scale(1.04);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(99, 102, 241, 0.25);
+        }
+        .country-card:hover::before {
+            opacity: 1;
+            top: -20%;
+            left: -20%;
+        }
+        .flag {
+            font-size: 42px;
+            margin-bottom: 14px;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+        .country-card:hover .flag {
+            transform: scale(1.15) rotate(8deg);
+        }
+        .country-name {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: white;
+        }
+        .store-footer {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn-store {
+            display: flex;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.95);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        .btn-store:hover {
+            background: white;
+            color: #0f172a;
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        .btn-store i {
+            font-size: 28px;
+            margin-right: 14px;
+        }
+        .glow {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99,102,241,0.25) 0%, transparent 70%);
+            filter: blur(80px);
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        @media (max-width: 480px) {
+            h1 { font-size: 2.3rem; }
+            .countries-container {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 14px;
+            }
+            .info-banner {
+                padding: 18px 20px;
+                margin-bottom: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="glow"></div>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h1>Happ</h1>
+            </div>
+            <p class="subtitle">Быстрый и надёжный VPN • Более 30 стран</p>
+        </header>
+
+        <!-- Новый информационный блок -->
+        <div class="info-banner">
+            <h3>Рекомендация для обхода белых списков</h3>
+            <p>Для максимальной стабильности и обхода белых списков (whitelisting) используйте <strong>российские серверы</strong>. Они часто маскируются под обычный локальный трафик, меньше привлекают внимание DPI и дают лучшую совместимость с ограниченными сетями. Комбинируйте с российским сервером в качестве «входной точки» — это один из самых рабочих способов в текущих условиях.</p>
+        </div>
+
+        <div class="countries-container">
+            <!-- Россия теперь первая -->
+            <a href="happ://crypt5/iaiiKQYjmuyUMqWB6a21AIWbvnUxU7uFdgQ68wE+pWjg+Mp3Ya3ovfST0lfGhQE2ou8lc7Bk1sIXb5a8XUclUeA2hjRZZz1iiB8lc15PFZ3C6XnTVkgk3e5M1h/qCSjEFq1UOdsPG7zYi1JzyRFjcRGadjJbCAJtpT6mJlT1oTK45VfLl8bJr6tsleQahjs75b36JZP8WPi5pkBnkTM5W/XqEcYa2iPj+anTr+Yx==DA6vFKvjRJDU/Kyu9A4SjHknMN7N4kgUsykbm2hD7lsO3ckHFwqL+cbUDzkBgLCRnQQJxTuHC5He3ZF3UcJuccFNJnzUvFfoEAUMQ/Vp7TmMjBdUZrhwTf4L7dP+YBnjE4Pjs0MKZcZ0TNYNM/thlrjQj2xUJnCUBMYOKfMAEMbycQzgBXV26YHQcbBI+1KKTfpHETfOwBDxcQzAAIsUfMOon+/2shPDuXcbhCMjJwSnoIQwaNyx8vfa6+z0tSldtwDfCOaIkEQaxfAVj8phjTfhYAVSWv6MzOEhxXCxqsMRaGbXDDhPc6OMPU6GSlShxvzk7UadUpztqiUnbJ1/7EuJID8TF5owYbOt1r24i0mYg2wn3DUuIHwvikVIsYZqjl6bKfUF/MGKBqklHowWhGM1QaS4uYUjPgspJQEWV+vOR7gDIbHIh0RDnP/60/W/c4kvHM73UT9oMBCLbfCvlp3zSRjaWodnFr4xD0JPPmrbR0Ic+bGpYdetuR/LQj4DF4021oKds1y/RsbAXS73dTReO0vEFhhq3gKJNARCk3et4E3j0lm/tDpViEMvOgQGNc9X/I/gxRwW4bp4ayBpAaZFMD3uINFBLyTtoL0wQuAnXRYiRBeNy8g9M8xeKwSjk15/4cDeY6MpHyjkEUBLVRGygnQ/cx9NWo9dnCKE0FM=pddioa" class="country-card"><span class="flag">🇷🇺</span><div class="country-name">Россия</div></a>
+            <a href="happ://crypt5/iaiitsO93qGXTMFM8g20XSF+8eIvNUa7RBERPyFLaK1mFvTLgF7wOc/uoPPI4bTab04muO0bsjZfkx5tCKod1KmFl1egTNB9CxAeM/ZBp0lhhHENTd+Q+iBD6kf8l7c89W1OK/hfW6Tifma1i3OmkbST9oi5SPF0LuMfPMS0nFKcynyHAOz61hOB5wuv/pbo/cJG9Zs19hG4IcsW2KwZobD929ztrqOrGvUNhxTfFsQz0SsXG2g2Pvzfs73K93jmAW81p0vcETf76oWmS5LNKde+f4L63QBNoU1EqVBO1TW8CeUJGyWxfv8+wrOy2Lo9B50887KPZ9di5vQqVtSE1xHbOagOZofsl8HIaqz9QTvtpTSmSxuobY0s+Vf4cI4wGqvW4O0iEVyj5gnQIaIhkgrT+9rdDyY5CAYB9/ku+jEAxeiXOFKmAYCg4DUKcUdnrTG6VAHCnfA2TcKjjkyjuWn2xANnlzvZOEkhfeNuz87UfJBs5kQtN+FUnSn3j+EYqgX35Rxi+laAXQWShl3AzclnyH0qDshELLJonbUToDHot5H/46SwcuS5dii2R8eEqc2GtlGxQ7PC2EZ3RbMgg64EW6jYewWIA+6ztAXpea6sa7+fBEZaQOc4LjkRZ8mUDt+m3osGdJ2Fld90aSb+hkVyrRf9YvoxZl3vjx6ulYf4aM/qzdI0pIaS3PMnuY2m1d5/7pMPoARvl2lvF1dWEUEDqKYX4HOdPtmMhEuf+Uq3YH60Hk2Cis//IBK3KknWk1SKF6zr4kBueRtcJQEssMIFqQRSWUeFbzNhmEqauyuKnNWugM//1rIWoBj8C7UJP1dWL8VNcIPbtD+cyd1orIscx89wm95cqKMYNcFlfcLsngRF71xDT6hTY07gsnroPNTcK9c3DhYt4=zedioa" class="country-card"><span class="flag">♨️</span><div class="country-name">TGK</div></a>
+
+            <!-- Остальные страны в оригинальном порядке (без изменений) -->
+            <a href="happ://crypt5/iaii0tVvDUn3isHh6n210JJXUinR6ewhnSnqkaqx/h26G8exXQZPa1BzmxCFUkD81Nws3NuAfDRfUTnOkBukmU0B9gDU1yhSAqHknA4REcIgorLfWf1/6R3H8Mpwa2leFaUaVU9QillA2wtSCSrAx5xEsUsBzDo94yWb5CDB3shxdCxcw/dyPx6NCIDPsIEKHUHrNW7C92bbTaqEEb+I3UgMoN+ggKwcMdGPIF1j==JAMdp4GMfDA9/ab7j0FHF1WEqo5mHbo9l4dAL2PMFbDZcCsOOpPYoP/lZM33sIU5mGzyd9HetKSwhGB/ePdr/OjQYtxM6go/ZiUDob+q9+pvqubIZMi1NvCDvNXGTxMXYETb5Csg9H7/2fqLdWo+7iYqlQXtqk7Use5eNyA1eudA8NSr9H+YSQQBmK6fjWPH4mopxal2VmYGR5ZodYfhLR0rpM9XjRsttk0XiLhs6pnSEcqPWkIj3MnlqaDhtmvzI4DzUekhJiYMPTe9GGleZ5HCLsp/5+nao/9aIZrqFsMId7w3iCJwssEtRZacOkVU+XHJaEfkmwppVwlKF/GM/JRf8z1eBmgnscwVGuKybp2y7pX5GQEg5GGk4SM98E0HGM4hhGTv5nXL/Q7xOuxdHbKbNNNzSZmHiUoVyMHoEUWOy4jIFDKtOr2kt/kSeyscK52Rg0f6lNoJ1dSkDwRq3750Zyody88HIwoSgUdh1MC+temUMBK6FRhZsU66WbhXw0/s+UTYXyah3dlhgtwQabFKwuqvihnn/vieMnzAsXgoCnZIWlxFBvY+FWJplS2BjcqHLSpKNdDbQlo8UEOXeXphjr+wbBFhJqSsTAR4ufK+lEQeLrUjQfKNQcP0SQ2pplIZNZxEOoL80KDmC7DZHH0the14MZ+DyM3FhD+gYYs=T/dioa" class="country-card"><span class="flag">🇦🇹</span><div class="country-name">Бразилия</div></a>
+            <a href="happ://crypt5/iaiiLApwJW6OqTNs6j21nPurGP34YhxVBRtESwrFD3bC0nAJRCGdvjFNyBermB7+O1COZ0FGaKF0qGcUMC3Ol8VYQfxr/kuYQN+8jydlFpXFl3Kjpn2dRpiRse9s9rrbd7Zfa4hvaZjtDc1+L5cXLaGJDEJRiKL98PyY4bfr0cH6h1dKiq9WZOV7ykNbfEMyhltJ2cqKNljLmRPMNFkY5sg6+JZPRM3xKDDga1oS==SAcoonfV/39Dv71nbCr6YtEtz37BoOAchZnuA+L9xgjJTUuay6nqvJ0hV62b7pu5JCv+X9HfcOzEQsXubyZ/q+n3zAAXTiwlK3t77mWpiCRlyK6kiSbY9o8rx9uviFc0Y48jmw4V4Xrch6SP1fisroqvX2UMD/+3SOk8NE5EFBc16Ng1Qs1s+KEwGN3K5kLwa149loMhB66ARXCVIpTZd+lvINfMV5jfBGdTuJBvsOSTQ7iOvcVmCiv2mEce5mIVpqlI9BxmaBsBS08jZKq2RAAiEiAvRmd8BtLBGId1Xsv7Hc8WoayW7yRPFzmUXr7dTG2OQq3mHWnfH/H43gulcdiqJJF4lQXGvGmRP7fPSqJQOVz8K4FyXvUPoOlh9YJTwbL9sO9tN+u2wtNbXl+LbvUyVsCiSc4M6756rXuVpfH/eqdcJd6laq+ktgfRJm4ScAk1VxFgo20hyE7ydy/gW3lorHqOhtaTDfilJqc8xrxTICb27vVFwqr6ejlX1gdgYYKBzrdUr8m4NPEJY61vHG4kzHCfV965Dp9kmP+LlmZqpjC9ldWYFDrkqsFYyWF1ecwUmj0Wgx4eOKka4Eq3tkHot9kM7mXC6hiQvEZ71QLOYdKqL4AyTVTt/zohYJHB635xEsPhxo3vuXH8hZ44x+4MeCD54X+NUG4of/dTi+Y=lzdioa" class="country-card"><span class="flag">🇧🇪</span><div class="country-name">Канада</div></a>
+            <a href="" class="country-card"><span class="flag">🇧🇷</span><div class="country-name">Китай</div></a>
+            <a href="" class="country-card"><span class="flag">🇬🇧</span><div class="country-name">Франция</div></a>
+            <a href="" class="country-card"><span class="flag">🇩🇪</span><div class="country-name">Германия</div></a>
+            <a href="" class="country-card"><span class="flag">🇬🇷</span><div class="country-name">Гонконг</div></a>
+            <a href="" class="country-card"><span class="flag">🇩🇰</span><div class="country-name">Индия</div></a>
+            <a href="" class="country-card"><span class="flag">🇪🇬</span><div class="country-name">Италия</div></a>
+            <a href="" class="country-card"><span class="flag">🇮🇱</span><div class="country-name">Япония</div></a>
+            <a href="" class="country-card"><span class="flag">🇮🇳</span><div class="country-name">Нидерланды</div></a>
+            <a href="" class="country-card"><span class="flag">🇪🇸</span><div class="country-name">Польша</div></a>
+            <a href="" class="country-card"><span class="flag">🇮🇹</span><div class="country-name">Россия</div></a>
+            <a href="" class="country-card"><span class="flag">🇨🇦</span><div class="country-name">Сингапур</div></a>
+            <a href="" class="country-card"><span class="flag">🇨🇳</span><div class="country-name">Южная-Корея</div></a>
+            <a href="" class="country-card"><span class="flag">🇲🇽</span><div class="country-name">Испания</div></a>
+            <a href="" class="country-card"><span class="flag">🇳🇱</span><div class="country-name">Швеция</div></a>
+            <a href="" class="country-card"><span class="flag">🇳🇴</span><div class="country-name">Швейцария</div></a>
+            <a href="" class="country-card"><span class="flag">🇦🇪</span><div class="country-name">Тайвань</div></a>
+            <a href="" class="country-card"><span class="flag">🇵🇱</span><div class="country-name">Турция</div></a>
+            <a href="" class="country-card"><span class="flag">🇵🇹</span><div class="country-name">Украина</div></a>
+            <a href="" class="country-card"><span class="flag">🇷🇸</span><div class="country-name">Великобритания</div></a>
+            <a href="" class="country-card"><span class="flag">🇺🇸</span><div class="country-name">США</div></a>
+            <a href="" class="country-card"><span class="flag">🇹🇷</span><div class="country-name">Неизвестно</div></a>
+            <a href="" class="country-card"><span class="flag">🇫🇮</span><div class="country-name">Живые</div></a>
+        </div>
+
+        <div class="store-footer">
+            <a href="https://play.google.com/store/apps/details?id=com.happproxy" target="_blank" class="btn-store">
+                <i class="fa-brands fa-google-play"></i>
+                <div>
+                    <small>Доступно в</small><br>
+                    <strong>Google Play</strong>
+                </div>
+            </a>
+           
+            <a href="https://apps.apple.com/app/id6504287215" target="_blank" class="btn-store">
+                <i class="fa-brands fa-app-store-ios"></i>
+                <div>
+                    <small>Загрузить в</small><br>
+                    <strong>App Store</strong>
+                </div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
